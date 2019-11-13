@@ -1,10 +1,10 @@
-# biblioteca
+# Library
 
-> CRUD with Vue and Firebase
+> Library with Vue and Firebase
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
