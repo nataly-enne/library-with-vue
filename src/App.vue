@@ -1,15 +1,15 @@
 <template>
   <div id="app">
     <div>
-      <label>Name:</label>
+      <label>Nome do Livro:</label>
       <input type="text" v-model="name" />
       <button @click="submitName()">Add</button>
     </div>
 
     <div>
-      <ul v-for="personName of names">
-        <li :key="personName['.key']">
-          {{ personName.name }}
+      <ul>
+        <li v-for="personName of names" v-bind:key="personName['.key']">
+          <p>{{ personName.name }}</p>
           <button @click="removePerson(personName['.key'])">Delete</button>
         </li>
       </ul>
@@ -22,17 +22,25 @@ import { namesRef } from "./firebase";
 export default {
   data() {
     return {
-      name: "Nátaly"
+      name: "",
+      names: []
     };
   },
+  template: "<p>{{ names }}</p> <br/>",
   firebase: {
     names: namesRef
   },
   methods: {
     submitName() {
       namesRef.push({ name: this.name, edit: false });
+      this.name = "";
     },
-    removePerson() {}
+    removePerson(key) {
+      namesRef.child(key).remove();
+    },
+    editPerson(key) {
+      namesRef.child(key).update({ edit: true });
+    }
   }
 };
 </script>
