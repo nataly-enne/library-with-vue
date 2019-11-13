@@ -1,0 +1,73 @@
+<template>
+  <div id="app">
+    <div>
+      <label>Name:</label>
+      <input type="text" v-model="name" />
+      <button @click="submitName()">Add</button>
+    </div>
+
+    <div>
+      <ul v-for="personName of names">
+        <li :key="personName['.key']">
+          {{ personName.name }}
+          <button @click="removePerson(personName['.key'])">Delete</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import { namesRef } from "./firebase";
+export default {
+  data() {
+    return {
+      name: "Nátaly"
+    };
+  },
+  firebase: {
+    names: namesRef
+  },
+  methods: {
+    submitName() {
+      namesRef.push({ name: this.name, edit: false });
+    },
+    removePerson() {}
+  }
+};
+</script>
+
+<style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+h1,
+h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+a {
+  color: #42b983;
+}
+
+button {
+  background-color: transparent;
+  border: 2px solid black;
+}
+</style>
