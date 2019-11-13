@@ -1,16 +1,24 @@
 <template>
   <div id="app">
     <div>
-      <label>Nome do Livro:</label>
+      <label>Book Name:</label>
       <input type="text" v-model="name" />
       <button @click="submitName()">Add</button>
     </div>
-
-    <div>
+    <br />
+    <div id="div">
       <ul>
-        <li v-for="personName of names" v-bind:key="personName['.key']">
-          <p>{{ personName.name }}</p>
-          <button @click="removePerson(personName['.key'])">Delete</button>
+        <li v-for="bookName of names" v-bind:key="bookName['.key']">
+          <div v-if="!bookName.edit">
+            <p>{{ bookName.name }}</p>
+            <button @click="removeBook(bookName['.key'])">Delete</button>
+            <button @click="editBook(bookName['.key'])">Edit</button>
+          </div>
+          <div v-else>
+            <input type="text" v-model="bookName.name" />
+            <button @click="saveEdit(bookName)">Save</button>
+            <button @click="cancelEdit(bookName['.key'])">Cancel</button>
+          </div>
         </li>
       </ul>
     </div>
@@ -26,7 +34,6 @@ export default {
       names: []
     };
   },
-  template: "<p>{{ names }}</p> <br/>",
   firebase: {
     names: namesRef
   },
@@ -35,11 +42,18 @@ export default {
       namesRef.push({ name: this.name, edit: false });
       this.name = "";
     },
-    removePerson(key) {
+    removeBook(key) {
       namesRef.child(key).remove();
     },
-    editPerson(key) {
+    editBook(key) {
       namesRef.child(key).update({ edit: true });
+    },
+    cancelEdit(key) {
+      namesRef.child(key).update({ edit: false });
+    },
+    saveEdit(book) {
+      const key = book[".key"];
+      namesRef.child(key).set({ name: book.name, edit: false });
     }
   }
 };
@@ -53,6 +67,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+#div {
+  border: 1px solid black;
 }
 
 h1,
