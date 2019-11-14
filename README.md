@@ -2,6 +2,7 @@
 
 > Library with Vue and Firebase
 
+#### > Before build setup, install vue-cli
 ## Build Setup
 
 ```bash
